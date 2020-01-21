@@ -37,10 +37,10 @@ def admin_required(fn):
 
 try:
     env = os.environ.get('FLASK_ENV', 'development')
-    if env is not 'testing':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@localhost/portfolio'
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
+    #if env is not 'testing':
+    #    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@localhost/portfolio'
+    #else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
 except Exception as e:
     raise e
 
