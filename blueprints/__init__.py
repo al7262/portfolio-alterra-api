@@ -35,15 +35,20 @@ def admin_required(fn):
 # DATABASE
 ##############################
 
-try:
-    env = os.environ.get('FLASK_ENV', 'development')
-    #if env is not 'testing':
-    #    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@localhost/portfolio'
-    #else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
-except Exception as e:
-    raise e
+##############################
+# TESTING
+##############################
+# try:
+#     env = os.environ.get('FLASK_ENV', 'development')
+#     if env is not 'testing':
+#        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@localhost/portfolio'
+#     else:
+#     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
+# except Exception as e:
+#     raise e
+##############################
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
