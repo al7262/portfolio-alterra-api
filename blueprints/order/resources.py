@@ -140,7 +140,7 @@ class OrderList(Resource):
             order = marshal(row, Order.Order_fields)
             order['order_details'] = payment
             qry3 = Users.query.get(row.user_id)
-            order['name'] = f"Order by{qry3.name} on {row.created_at} ({row.finished})"
+            order['name'] = "Order by{name} on {created_at} ({finished})".format(name=qry3.name, created_at=row.created_at, finished=row.finished)
             row.append(order)
         if not rows:
             return {'message': 'No order have been made'}, 404, {'Content-Type':'application/json'}
