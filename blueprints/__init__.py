@@ -34,21 +34,25 @@ def admin_required(fn):
 ##############################
 # DATABASE
 ##############################
+db_user=os.getenv('DB_USER')
+db_pass=os.getenv('DB_PASS')
+db_url=os.getenv('DB_URL')
+db_selected=os.getenv('DB_SELECTED')
 
 ##############################
 # TESTING
 ##############################
-try:
-    env = os.environ.get('FLASK_ENV', 'development')
-    if env is not 'testing':
-       app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
-except Exception as e:
-    raise e
-#############################
+# try:
+#     env = os.environ.get('FLASK_ENV', 'development')
+#     if env is not 'testing':
+#        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
+#     else:
+#         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
+# except Exception as e:
+#     raise e
+# #############################
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:01010010@portfolio-db.c1uuim5fufwd.ap-southeast-1.rds.amazonaws.com:3306/portfolio'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pass}@{url}/{selected}'.format(user=db_user, pass=db_pass, url=db_url, selected=db_selected)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
