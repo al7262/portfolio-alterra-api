@@ -34,6 +34,7 @@ def admin_required(fn):
 ##############################
 # DATABASE
 ##############################
+
 db_user=os.getenv('DB_USER')
 db_pass=os.getenv('DB_PASS')
 db_url=os.getenv('DB_URL')
