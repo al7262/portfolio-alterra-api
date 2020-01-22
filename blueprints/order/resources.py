@@ -53,7 +53,7 @@ class OrderResource(Resource):
             db.session.commit()
         except:
             return {'message': 'Please check your input again'}, 400, {'Content-Type': 'application/json'}
-        return {'message' : "Adding Order successful!"},200,{'Content-Type': 'application/json'}
+        return {'data': marshal(newOrder, Order.Order_fields),'message' : "Adding Order successful!"},200,{'Content-Type': 'application/json'}
 
     @jwt_required
     def put(self, id):
@@ -89,20 +89,19 @@ class OrderResource(Resource):
         return marshal(qry, Order.Order_fields), 200, {'Content-Type': 'application/json'}
 
     @jwt_required
+    @admin_required
     def delete(self, id):
         claims = get_jwt_claims()
         qry = Order.query.get(id)
         if qry is None:
             return {'message': 'Order is not found'}, 404, {'Content-Type': 'application/json'}
-        if qry.user_id is not claims['id']:
-            return {'message': 'You are not authorized'}, 403, {'Content-Type': 'application/json'}
-
+       
         db.session.delete(qry)
         db.session.commit()
-        Order = marshal(qry, Order.Order_fields)
-        return {'Order': Order, 'message': 'Order deleted!'}, 200, {'Content-Type': 'application/json'}
+        order = marshal(qry, Order.Order_fields)
+        return {'Order': order, 'message': 'Order deleted!'}, 200, {'Content-Type': 'application/json'}
 
-    def options(self):
+    def options(self, id=None):
         return {'status': 'OK'}, 200
 
 class OrderList(Resource):
@@ -133,15 +132,18 @@ class OrderList(Resource):
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
             qry2 = Order_Details.query.filter_by(order_id=row.id)
-            payment = []
+            details = []
             for detail in qry2.all():
-                payment.append(detail, Order_Details.Order_Details_fields)
+                details.append(marshal(detail, Order_Details.Order_Details_fields))
             
             order = marshal(row, Order.Order_fields)
-            order['order_details'] = payment
+            order['order_details'] = details
             qry3 = Users.query.get(row.user_id)
-            order['name'] = "Order by{name} on {created_at} ({finished})".format(name=qry3.name, created_at=row.created_at, finished=row.finished)
-            row.append(order)
+            finished = 'Finished' if row.finished else 'Unfinished'
+            order['name'] = "Order by {name} on {created_at} ({finished})".format(name=qry3.username, created_at=row.created_at, finished=finished)
+            print(order)
+            rows.append(order)
+
         if not rows:
             return {'message': 'No order have been made'}, 404, {'Content-Type':'application/json'}
         return rows, 200

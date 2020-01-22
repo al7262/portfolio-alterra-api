@@ -30,7 +30,7 @@ class OrderDetailResource(Resource):
         parse.add_argument('tot_price', location='json', required=True)
         args = parse.parse_args()
 
-        newOrderDetails = Order_Details(product_id['id'], args['order_id'], args['product_id'], args['qty'], args['tot_price'])
+        newOrderDetails = Order_Details(args['order_id'], args['product_id'], args['qty'], args['tot_price'])
         db.session.add(newOrderDetails)
         try:
             db.session.commit()
@@ -93,3 +93,5 @@ class OrderDetailsList(Resource):
 
     def options(self):
         return {'status': 'OK'}, 200
+
+api.add_resource(OrderDetailResource, '', '/<id>')
