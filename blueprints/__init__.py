@@ -51,6 +51,7 @@ db_selected=os.getenv('DB_SELECTED')
 #         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
 # except Exception as e:
 #     raise e
+# Just trying to change things??
 # #############################
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pass}@{url}/{selected}'.format(user=db_user, pass=db_pass, url=db_url, selected=db_selected)
