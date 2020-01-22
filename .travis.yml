@@ -5,8 +5,8 @@ os:
 - linux
 env:
   global:
-  - DOCKER_IMAGE_NAME="alta"
-  - DOCKER_HUB_ORG="ajisepulsa"
+  - DOCKER_IMAGE_NAME="portfolio"
+  - DOCKER_HUB_ORG="al7262"
 before_install:
 - openssl aes-256-cbc -K $encrypted_8394b1c9241d_key -iv $encrypted_8394b1c9241d_iv -in deploy_rsa.enc -out deploy_rsa -d
 - eval "$(ssh-agent -s)"
