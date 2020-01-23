@@ -43,17 +43,17 @@ db_selected=os.getenv('DB_SELECTED')
 ##############################
 # TESTING
 ##############################
-try:
-    env = os.environ.get('FLASK_ENV', 'development')
-    if env is not 'testing':
-       app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
-except Exception as e:
-    raise e
-#############################
+# try:
+#     env = os.environ.get('FLASK_ENV', 'development')
+#     if env is not 'testing':
+#        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
+#     else:
+#         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
+# except Exception as e:
+#     raise e
+# #############################
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pw}@{url}/{selected}'.format(user=db_user, pw=db_pass, url=db_url, selected=db_selected)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pw}@{url}/{selected}'.format(user=db_user, pw=db_pass, url=db_url, selected=db_selected)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
