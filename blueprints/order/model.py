@@ -6,9 +6,9 @@ class Order(db.Model):
     __tablename__='Order'
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
+    address_id = db.Column(db.Integer, db.ForeignKey('Address.id', ondelete='SET NULL'), nullable=True)
     shipping = db.Column(db.String(50), nullable=True)
     payment = db.Column(db.String(50), nullable=True)
-    discount = db.Column(db.Integer, nullable = True, default = 0)
     tot_price = db.Column(db.Float, nullable = True, default = 0)
     shipping_price = db.Column(db.Float, nullable = True, default = 0)
     tot_qty = db.Column(db.Integer, nullable = True, default = 0)
@@ -19,8 +19,9 @@ class Order(db.Model):
     Order_fields = {
         'id': fields.Integer,
         'user_id': fields.Integer,
-        'shipping': fields.Integer,
-        'payment': fields.Integer,
+        'address_id': fields.Integer,
+        'shipping': fields.String,
+        'payment': fields.String,
         'tot_price': fields.Float,
         'shipping_price': fields.Float,
         'tot_qty': fields.Integer,
@@ -29,8 +30,9 @@ class Order(db.Model):
         'finished': fields.Boolean
     }
 
-    def __init__(self, user_id, shipping, payment, tot_price, discount, shipping_price, tot_qty, finished):
+    def __init__(self, user_id, address_id, shipping, payment, tot_price, shipping_price, tot_qty, finished):
         self.user_id = user_id
+        self.address_id = address_id
         self.shipping = shipping
         self.payment = payment
         self.tot_price = tot_price

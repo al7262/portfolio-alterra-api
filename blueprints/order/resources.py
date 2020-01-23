@@ -36,9 +36,9 @@ class OrderResource(Resource):
         claims = get_jwt_claims()
         parse = reqparse.RequestParser()
         parse.add_argument('shipping', location='json')
+        parse.add_argument('address_id', location='json')
         parse.add_argument('payment', location='json')
         parse.add_argument('tot_price', location='json')
-        parse.add_argument('discount', location='json')
         parse.add_argument('shipping_price', location='json')
         parse.add_argument('tot_qty', location='json')
         parse.add_argument('finished', location='json')
@@ -47,13 +47,13 @@ class OrderResource(Resource):
         qry = Users.query.get(claims['id'])
         user = marshal (qry, Users.Users_fields)
 
-        newOrder = Order(user['id'], args['shipping'], args['payment'], args['tot_price'], args['discount'], args['shipping_price'], args['tot_qty'], args['finished'])
+        newOrder = Order(user['id'], args['address_id'], args['shipping'], args['payment'], args['tot_price'], args['shipping_price'], args['tot_qty'], args['finished'])
         db.session.add(newOrder)
         try:
             db.session.commit()
         except:
             return {'message': 'Please check your input again'}, 400, {'Content-Type': 'application/json'}
-        return {'data': marshal(newOrder, Order.Order_fields),'message' : "Adding Order successful!"},200,{'Content-Type': 'application/json'}
+        return {'result': marshal(newOrder, Order.Order_fields),'message' : "Adding Order successful!"},200,{'Content-Type': 'application/json'}
 
     @jwt_required
     def put(self, id):
@@ -128,7 +128,7 @@ class OrderList(Resource):
             if args['sort'] is not None and args['sort']=='desc':
                 orderby = str(args['sort'])+'('+'Order.'+str(args['orderby'])+')'
             qry = qry.order_by(eval(orderby))
-        
+
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
             qry2 = Order_Details.query.filter_by(order_id=row.id)
@@ -146,7 +146,8 @@ class OrderList(Resource):
 
         if not rows:
             return {'message': 'No order have been made'}, 404, {'Content-Type':'application/json'}
-        return rows, 200
+        totalQry = len(qry.all())
+        return {'total':totalQry, 'result':rows}, 200
     
     def options(self):
         return {'status': 'OK'}, 200

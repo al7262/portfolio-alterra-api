@@ -76,7 +76,8 @@ class CategoryList(Resource):
             rows.append(marshal(row, Category.Category_fields))
         if not rows:
             return {'message': 'Category is not found'}, 404, {'Content-Type': 'application/json'}
-        return rows, 200
+        totalQry = len(qry.all())
+        return {'total':totalQry, 'result':rows}, 200
 
     def options(self):
         return {'status': 'OK'}, 200

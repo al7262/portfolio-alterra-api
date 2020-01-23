@@ -10,7 +10,6 @@ class Address(db.Model):
     details = db.Column(db.String(255), nullable = False)
     city = db.Column(db.String(50), nullable = False)
     province = db.Column(db.String(50), nullable = False)
-    country = db.Column(db.String(50), nullable = False)
     zipcode = db.Column(db.String(10), nullable = False)
 
     Address_fields = {
@@ -20,15 +19,13 @@ class Address(db.Model):
         'details': fields.String,
         'city': fields.String,
         'province': fields.String,
-        'country': fields.String,
         'zipcode': fields.String
     }
 
-    def __init__(self, user_id, contact, details, city, province, country, zipcode):
+    def __init__(self, user_id, contact, details, city, province, zipcode):
         self.user_id = user_id
         self.contact = contact
         self.details = details
         self.city = city
         self.province = province
-        self.country = country
         self.zipcode = zipcode

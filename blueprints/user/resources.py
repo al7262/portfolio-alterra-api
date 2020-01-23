@@ -133,8 +133,9 @@ class UserList(Resource):
             user['name']= qry2.fname+' '+qry2.lname if qry2 is not None else user['email']
             rows.append(user)
         if not rows:
-            return {'message': 'No user found'}, 404, {'Content-Type': 'application/json'}
-        return rows, 200
+            return {'message': 'No Order found'}, 404, {'Content-Type': 'application/json'}
+        totalQry = len(qry.all())
+        return {'total':totalQry, 'result':rows}, 200
 
     def options(self):
         return {'status': 'OK'}, 200
@@ -150,7 +151,8 @@ class UserOrder(Resource):
             rows.append(marshal(row, Order.Order_fields))
         if not rows:
             return {'message': 'No Order have been made yet'}, 404, {'Content-Type': 'application/json'}
-        return rows, 200
+        totalQry = len(qry.all())
+        return {'total':totalQry, 'result':rows}, 200
 
     def options(self):
         return {'status': 'OK'}, 200

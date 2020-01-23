@@ -115,7 +115,8 @@ class ProductList(Resource):
             rows.append(marshal(row, Product.Product_fields))
         if not rows:
             return {'message': 'No product available'}, 404, {'Content-Type':'application/json'}
-        return rows, 200
+        totalQry = len(qry.all())
+        return {'total':totalQry, 'result':rows}, 200
 
     def options(self):
         return {'status': 'OK'}, 200

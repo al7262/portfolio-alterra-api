@@ -43,17 +43,17 @@ db_selected=os.getenv('DB_SELECTED')
 ##############################
 # TESTING
 ##############################
-# try:
-#     env = os.environ.get('FLASK_ENV', 'development')
-#     if env is not 'testing':
-#        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
-#     else:
-#         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
-# except Exception as e:
-#     raise e
-# #############################
+try:
+    env = os.environ.get('FLASK_ENV', 'development')
+    if env is not 'testing':
+       app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio'
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://alta5:01010010@localhost/portfolio_testing'
+except Exception as e:
+    raise e
+#############################
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pass}@{url}/{selected}'.format(user=db_user, pass=db_pass, url=db_url, selected=db_selected)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{pw}@{url}/{selected}'.format(user=db_user, pw=db_pass, url=db_url, selected=db_selected)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -81,6 +81,7 @@ from blueprints.product.resources import bp_product
 from blueprints.category.resources import bp_category
 from blueprints.order.resources import bp_order
 from blueprints.order_details.resources import bp_order_details
+from blueprints.shipment import bp_shipment
 
 app.register_blueprint(bp_auth, url_prefix = '')
 app.register_blueprint(bp_user, url_prefix = '/user')
@@ -90,6 +91,8 @@ app.register_blueprint(bp_product, url_prefix = '/product')
 app.register_blueprint(bp_category, url_prefix = '/category')
 app.register_blueprint(bp_order, url_prefix = '/order')
 app.register_blueprint(bp_order_details, url_prefix = '/order/detail')
+app.register_blueprint(bp_shipment, url_prefix = '/shipment')
+
 
 db.create_all()
 
